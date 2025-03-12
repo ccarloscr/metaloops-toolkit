@@ -2,19 +2,43 @@
 
 
 ## Copyright (C) 2022 Julien Dorier and UNIL (University of Lausanne).
-## 
-## This program is free software: you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation, either version 3 of the License, or (at
-## your option) any later version.
-## 
-## This program is distributed in the hope that it will be useful, but
-## WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-## General Public License for more details.
-## 
-## You should have received a copy of the GNU General Public License
-## along with this program. If not, see <https://www.gnu.org/licenses/>.
+## Modifications summarized in README file
+
+
+# Vectors containing package names
+cran_packages <- c("optparse", "data.table", "igraph", "mlpack")
+bioc_packages <- c("EBImage", "rhdf5")
+
+# Installation of BiocManager
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
+# Funcion to install cran packages
+install_cran <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    install.packages(pkg, dependencies = TRUE)}
+}
+
+# Funcion to install bioconductor packages
+install_bioc <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    BiocManager::install(pkg, dependencies = TRUE)}
+}
+
+# Installation loop
+lapply(cran_packages, install_cran)
+lapply(bioc_packages, install_bioc)
+
+# Function to load packages
+load_library <- function(pkg) {
+  library(pkg, character.only = TRUE)
+}
+
+# Loading loop
+lapply(cran_packages, load_library)
+lapply(bioc_packages, load_library)
+
 
 
 
@@ -23,7 +47,6 @@
 #############################################
           
 args=commandArgs(trailingOnly = TRUE)
-library(optparse)
 option_list=list( 
     make_option(c("--chunk-size"), type="integer", default=5000,metavar="size",
                 help="chunk size (unit: number of bins) [default %default]."),
@@ -88,12 +111,6 @@ outputfile=opt$options[["output"]]
 ##positional arguments
 inputfile=opt$args[1]
 
-
-library(data.table)
-library(EBImage)
-library(rhdf5)
-library(mlpack)
-library(igraph)
 
 options(scipen=10000)
 dir.create(dirname(outputfile), showWarnings = FALSE,recursive=TRUE)
