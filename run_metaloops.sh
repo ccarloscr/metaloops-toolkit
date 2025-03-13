@@ -11,4 +11,6 @@
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate workplace
 
-meta_loops.R --output=Dmel-meta-loops.tsv --resolution=4000 --chrs=chr2L,chr2R,chr3L,chr3R,chr4,chrX CTRL_1000_balanced.mcool
+Rscript install_packages.R
+
+Rscript meta_loops.R --output=Dmel-meta-loops.tsv --resolution=4000 --chrs=chr2L,chr2R,chr3L,chr3R,chr4,chrX CTRL_1000_balanced.mcool
