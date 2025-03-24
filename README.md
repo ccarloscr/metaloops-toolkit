@@ -1,5 +1,10 @@
 # metaloops-25
 
+- Get bedpe files
+- Convert to mcool files
+- Merge relicates
+- Run metaloops
+
 
 
 
