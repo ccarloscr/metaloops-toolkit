@@ -9,7 +9,9 @@ This repository contains all the necessary scripts to download bedpe.gz files fr
 The main script run_script.sh calls the other script when needed:
 
 1- Input files: input files can be provided in bedpe.gz, cool or mcool format. Alternatively, a metadata file containing urls can be provided to download the files.
+
 2- Conversion: if files provided are not in cool nor mcool formats, they are converted into cool files.
+
 3- Merge of replicates: if 
 
 1- Download files: only if a url-containing file is provided.
