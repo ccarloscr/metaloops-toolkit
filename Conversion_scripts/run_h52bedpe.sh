@@ -11,7 +11,7 @@
 # Configuration
 source /etc/profile
 source ~/miniconda3/etc/profile.d/conda.sh
-conda activate workplace
+conda activate metaloops
 
 # Run python script
 python h52bedpe.py
