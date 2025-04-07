@@ -18,6 +18,7 @@ Create a conda environment named workplace using the provided environment.yml:
 conda env create -f env.yml
 ```
 
+Additionally, the conversion of bedpe files into cool requires a chrom.sizes .txt file indicating the size of each chromosome. The _Drosophila_ dm6 chrom.sizes file is included in the repository.
 
 ## Configuration
 
