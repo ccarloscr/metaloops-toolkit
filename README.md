@@ -11,27 +11,16 @@ git clone https://github.com/ccarloscr/metaloops-25
 cd metaloops-25
 ```
 
-The conversion scripts require python3, hdf5plugin, h5py, numpy, cooler.
+Metaloops and conversion scripts require python3, hdf5plugin, h5py, numpy, cooler and R (v4). These programs are detailed in the environment.yml file provided. The required R packages are installed when run_metaloops.sh is ran.
 
-Metaloops require cooler, R (v4), optparse, data.table, igraph, mlack, EBImage and rhdf5.
-
-
-
-
+Create a conda environment named workplace using the provided environment.yml:
+```bash
+conda env create --name workplace --file=environment.yml
+```
 
 ## Configuration
 
 The scripts on this reposition are configured to run using SLURM. Change the scripts' headers according to your preferred job manager.
-
-
-
-- Get bedpe files
-- Convert to cool files
-- Merge relicates
-- Convert to mcool
-- Run metaloops
-
-
 
 
 ## Credits
