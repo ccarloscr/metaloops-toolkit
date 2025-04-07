@@ -15,7 +15,7 @@ conda activate metaloops
 echo "Initiating meta loops..."
 
 # Define the main directory to search for .mcool files
-MAIN_DIR="/metaloops-25/mcool_files"
+MAIN_DIR="./metaloops-25/mcool_files"
 
 # Loop through all .mcool files in the main directory and its subdirectories
 find "$MAIN_DIR" -type f -name "*.mcool" | while read -r mcool_file; do
