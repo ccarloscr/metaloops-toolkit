@@ -21,7 +21,7 @@ output_dir="cool_files"
 chrom_sizes="dm6.chrom.sizes.txt"
 resolution=4000
 blacklist_chr="chrM|chrY"
-
+mkdir -p output_dir
 
 # Checks
 [ ! -d "$input_dir" ] && echo "ERROR: Directory $input_dir does not exist" && exit 1
