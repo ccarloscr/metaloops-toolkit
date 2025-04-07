@@ -1,0 +1,20 @@
+name: metaloops
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3
+  - r-base
+  - cooler
+  - hdf5plugin
+  - h5py
+  - numpy
+  - r-tidyverse
+  - r-fftwtools
+  - bioconductor-ebimage
+  - r-optparse
+  - r-data.table
+  - r-igraph
+  - r-mlpack
+  - r-reshape2
+  - bioconductor-rhdf5
