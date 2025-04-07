@@ -10,10 +10,7 @@
 
 source /etc/profile
 source ~/miniconda3/etc/profile.d/conda.sh
-conda activate workplace
-
-echo "Installing packages..."
-Rscript install_packages.R
+conda activate metaloops
 
 echo "Initiating meta loops..."
 
