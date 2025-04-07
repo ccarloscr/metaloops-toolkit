@@ -15,7 +15,7 @@ Metaloops and conversion scripts require python3, hdf5plugin, h5py, numpy, coole
 
 Create a conda environment named workplace using the provided environment.yml:
 ```bash
-conda env create --name workplace --file=environment.yml
+conda env create --name metaloops --file=environment.yml
 ```
 
 The required R packages are installed when run_metaloops.sh is ran.
