@@ -11,12 +11,14 @@ git clone https://github.com/ccarloscr/metaloops-25
 cd metaloops-25
 ```
 
-Metaloops and conversion scripts require python3, hdf5plugin, h5py, numpy, cooler and R (v4). These programs are detailed in the environment.yml file provided. The required R packages are installed when run_metaloops.sh is ran.
+Metaloops and conversion scripts require python3, hdf5plugin, h5py, numpy, cooler and R (v4). These programs are detailed in the environment.yml file provided.
 
 Create a conda environment named workplace using the provided environment.yml:
 ```bash
 conda env create --name workplace --file=environment.yml
 ```
+
+The required R packages are installed when run_metaloops.sh is ran.
 
 ## Configuration
 
