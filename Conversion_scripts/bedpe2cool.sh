@@ -12,7 +12,7 @@
 # Configuration
 source /etc/profile
 source ~/miniconda3/etc/profile.d/conda.sh
-conda activate workplace
+conda activate metaloops
 
 
 # Variable set up
