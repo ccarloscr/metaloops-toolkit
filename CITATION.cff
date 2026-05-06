@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the original meta-loop paper and this repository if you used the conversion/SLURM helper scripts."
+title: "metaloops-25: Hi-C format conversion utilities and SLURM wrappers for meta-loop calling"
+authors:
+  - family-names: "Camilleri-Robles"
+    given-names: "Carlos"
+repository-code: "https://github.com/ccarloscr/metaloops-25"
+license: "GPL-3.0-only"
+
+preferred-citation:
+  type: article
+  title: "Chromosome-level organization of the regulatory genome in the Drosophila nervous system"
+  authors:
+    - family-names: "Mohana"
+      given-names: "Giriram"
+    - family-names: "Dorier"
+      given-names: "Julien"
+    - family-names: "Li"
+      given-names: "Xiao"
+    - family-names: "Gambetta"
+      given-names: "Maria Cristina"
+  doi: "10.1016/j.cell.2023.07.008"
+  journal: "Cell"
+  volume: 186
+  issue: 18
+  start: 3826
+  end: "3844.e26"
+  year: 2023
