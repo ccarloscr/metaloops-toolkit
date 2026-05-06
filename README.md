@@ -1,24 +1,69 @@
 # metaloops-25
 
-This repository aims to facilitate the conversion of Hi-C data formats h5, bedpe and cool into mcool, which can be used to run metaloops for loop calling. These conversion scripts are located in [Conversion_scripts](https://github.com/ccarloscr/metaloops-25/blob/main/Conversion_scripts).
+Utilities for converting Hi-C contact data into multi-resolution Cooler (`.mcool`) files and running the original `meta_loops.R` meta-loop caller from the Gambetta Lab [meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main) repository.
+
+> **Important:** This repository does **not** implement a new meta-loop calling algorithm.  
+> The meta-loop caller included here, `meta_loops.R`, is a copy of the original script from:
+> [gambettalab/meta-loops-2022/loop_calling/meta_loops.R](https://github.com/gambettalab/meta-loops-2022/blob/main/loop_calling/meta_loops.R)
+>
+> The additional code in this repository consists mainly of:
+>
+> - format-conversion helper scripts,
+> - Drosophila/dm6-oriented defaults,
+> - SLURM job scripts for running the conversion and meta-loop-calling steps on an HPC cluster.
+
+
+## Repository structure
+
+```text
+metaloops-25/
+├── Conversion_scripts/
+│   ├── h52bedpe.py
+│   ├── run_h52bedpe.sh
+│   ├── bedpe2cool.sh
+│   ├── cool2mcool.sh
+│   └── dm6.chrom.sizes.txt
+├── environment.yml
+├── meta_loops.R
+├── run_metaloops.sh
+├── LICENSE
+└── README.md
+```
+
+
+## What this repository does
+
+This repository helps run the following workflow:
+
+| Step | Input | Output | Script |
+| :--- | :--- | :--- | :--- |
+| 1 | `.h5` Hi-C matrix files | `.bedpe` | `Conversion_scripts/h52bedpe.py` or `run_h52bedpe.sh` |
+| 2 | `.bedpe` | `.cool` | `Conversion_scripts/bedpe2cool.sh` |
+| 3 | `.cool` | `.mcool` | `Conversion_scripts/cool2mcool.sh` |
+| 4 | `.mcool` | meta-loop calls (`.tsv`) | `run_metaloops.sh` + `meta_loops.R` |
+
+The final output of `meta_loops.R` is a tab-separated file with one row per called meta-loop and columns describing both anchors.
+
+
+
+
+
+
 
 
 ## Installation
 
-To install the pipeline clone the repository:
+Clone this repository:
 ```bash
 git clone https://github.com/ccarloscr/metaloops-25
 cd metaloops-25
 ```
 
-Metaloops and conversion scripts require python3, hdf5plugin, h5py, numpy, cooler, R (v4) and multiple R packages. These programs are detailed in the environment.yml file provided.
-
-Create a conda environment named workplace using the provided environment.yml:
+Create the conda environment:
 ```bash
-conda env create -f env.yml
+conda env create -f environment.yml
 ```
 
-Additionally, the conversion of bedpe files into cool requires a chrom.sizes .txt file indicating the size of each chromosome. The _Drosophila_ dm6 chrom.sizes file is included in the repository.
 
 ## Configuration
 
