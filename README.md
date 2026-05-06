@@ -13,6 +13,43 @@ Utilities for converting Hi-C contact data into multi-resolution Cooler (`.mcool
 > - SLURM job scripts for running the conversion and meta-loop-calling steps on an HPC cluster.
 
 
+## What this repository does
+
+This repository helps run the following workflow:
+
+```mermaid
+flowchart LR
+
+    subgraph METALOOPS [METALOOPS-25]
+    subgraph FORMAT [FORMAT CONVERSION TOOLS]
+        A([h5]) --> B([bedpe]) --> C([cool]) --> D([mcool])
+    end
+        D --> E[metaloops]
+    end
+    subgraph EXECUTION
+        X[Local machine]
+        Y[SLURM cluster]
+    end
+
+    X --> A
+    Y --> A
+    E --> Z[Identified loops]
+
+style METALOOPS fill:#f1f8e9,stroke:#33691e
+style EXECUTION fill:#f1f8e9,stroke:#33691e
+```
+
+| Step | Input | Output | Script |
+| :--- | :--- | :--- | :--- |
+| 1 | `.h5` Hi-C matrix files | `.bedpe` | `Conversion_scripts/h52bedpe.py` or `run_h52bedpe.sh` |
+| 2 | `.bedpe` | `.cool` | `Conversion_scripts/bedpe2cool.sh` |
+| 3 | `.cool` | `.mcool` | `Conversion_scripts/cool2mcool.sh` |
+| 4 | `.mcool` | meta-loop calls (`.tsv`) | `run_metaloops.sh` + `meta_loops.R` |
+
+The final output of `meta_loops.R` is a tab-separated file with one row per called meta-loop and columns describing both anchors.
+
+
+
 ## Repository structure
 
 ```text
@@ -44,21 +81,6 @@ metaloops-25/
     └── meta-loops-2022/
         └── meta_loops.R
 ```
-
-
-## What this repository does
-
-This repository helps run the following workflow:
-
-| Step | Input | Output | Script |
-| :--- | :--- | :--- | :--- |
-| 1 | `.h5` Hi-C matrix files | `.bedpe` | `Conversion_scripts/h52bedpe.py` or `run_h52bedpe.sh` |
-| 2 | `.bedpe` | `.cool` | `Conversion_scripts/bedpe2cool.sh` |
-| 3 | `.cool` | `.mcool` | `Conversion_scripts/cool2mcool.sh` |
-| 4 | `.mcool` | meta-loop calls (`.tsv`) | `run_metaloops.sh` + `meta_loops.R` |
-
-The final output of `meta_loops.R` is a tab-separated file with one row per called meta-loop and columns describing both anchors.
-
 
 
 ## Installation
