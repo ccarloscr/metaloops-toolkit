@@ -17,17 +17,32 @@ Utilities for converting Hi-C contact data into multi-resolution Cooler (`.mcool
 
 ```text
 metaloops-25/
-├── Conversion_scripts/
+├── README.md
+├── LICENSE
+├── NOTICE.md
+├── CITATION.cff
+├── environment.yml
+├── .gitignore
+│
+├── config/
+│   ├── example.env
+│   └── dm6.chrom.sizes.txt
+│
+├── scripts/
 │   ├── h52bedpe.py
-│   ├── run_h52bedpe.sh
 │   ├── bedpe2cool.sh
 │   ├── cool2mcool.sh
-│   └── dm6.chrom.sizes.txt
-├── environment.yml
-├── meta_loops.R
-├── run_metaloops.sh
-├── LICENSE
-└── README.md
+│   └── run_metaloops.sh
+│
+├── slurm/
+│   ├── h52bedpe.sbatch
+│   ├── bedpe2cool.sbatch
+│   ├── cool2mcool.sbatch
+│   └── metaloops.sbatch
+│
+└── third_party/
+    └── meta-loops-2022/
+        └── meta_loops.R
 ```
 
 
@@ -46,11 +61,6 @@ The final output of `meta_loops.R` is a tab-separated file with one row per call
 
 
 
-
-
-
-
-
 ## Installation
 
 Clone this repository:
@@ -59,15 +69,75 @@ git clone https://github.com/ccarloscr/metaloops-25
 cd metaloops-25
 ```
 
-Create the conda environment:
+Create and activate the conda environment:
 ```bash
 conda env create -f environment.yml
+conda activate metaloops
+```
+
+The environment includes the main dependencies needed for the conversion scripts and for running the original `meta_loops.R` script, including Python 3, cooler, h5py, hdf5plugin, numpy, R, and the required R/Bioconductor packages.
+
+Create local working directories for input files, intermediate files, results, and logs:
+```bash
+mkdir -p data/h5 data/bedpe data/cool data/mcool results logs
 ```
 
 
 ## Configuration
 
-The scripts on this reposition are configured to run using SLURM. Change the scripts' headers according to your preferred job manager.
+This repository uses a local configuration file to avoid hard-coding user-specific paths, genome settings, and HPC/SLURM options inside the scripts.
+
+Copy the example configuration file:
+```bash
+cp config/example.env config/local.env
+```
+
+Then edit it for your system:
+```bash
+nano config/local.env
+```
+
+The provided defaults are oriented toward the Drosophila dm6 genome assembly. If you use another genome, you must the following variables with values appropriate for your organism and genome assembly:
+```bash
+GENOME="dm6"
+CHROM_SIZES="${PROJECT_DIR}/config/dm6.chrom.sizes.txt"
+CHROMS="chr2L,chr2R,chr3L,chr3R,chrX"
+```
+The chromosome sizes file should contain two columns: **chromosome_name** and **chromosome_length**
+
+
+## Execution
+
+After installation and configuration, the workflow can be run either directly from the command line or submitted to a SLURM-based cluster.
+
+### Local execution
+
+Run the scripts directly using your local configuration file:
+```bash
+python scripts/h52bedpe.py config/local.env
+bash scripts/bedpe2cool.sh config/local.env
+bash scripts/cool2mcool.sh config/local.env
+bash scripts/run_metaloops.sh config/local.env
+```
+
+### SLURM execution
+
+SLURM submission templates are provided in the slurm/ directory. Before submitting jobs, check that the SLURM settings in config/local.env and/or the slurm/*.sbatch files match your HPC cluster.
+
+Submit the jobs with:
+```bash
+sbatch slurm/h52bedpe.sbatch config/local.env
+sbatch slurm/bedpe2cool.sbatch config/local.env
+sbatch slurm/cool2mcool.sbatch config/local.env
+sbatch slurm/metaloops.sbatch config/local.env
+```
+
+## Notes
+
+- The conversion scripts are helper utilities for preparing Hi-C data for meta-loop calling.
+- The actual meta-loop caller is the original `meta_loops.R` script from the Gambetta Lab `meta-loops-2022` repository.
+- The provided SLURM scripts are examples and should be adapted to each user's HPC environment.
+- The default genome settings are for Drosophila dm6.
 
 
 ## Credits
