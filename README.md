@@ -1,5 +1,15 @@
 # metaloops-toolkit
 
+---
+### TO DO LIST
+- Test raw conversion scripts
+- Test slurm conversion scripts
+- Test metaloops
+- Update README
+- Update other files
+---
+
+
 Utilities for converting raw Hi-C contact data into multi-resolution Cooler (`.mcool`) files and running the original `meta_loops.R` meta-loop caller from the Gambetta Lab [meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main) repository.
 
 > **Important:** This repository does **not** implement a new meta-loop calling algorithm.  
