@@ -1,5 +1,5 @@
 # metaloops-toolkit
-
+![WIP](https://img.shields.io/badge/status-testing%20workflow-orange)
 ---
 ### TO DO LIST
 - Test raw conversion scripts
