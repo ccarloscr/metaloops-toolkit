@@ -1,6 +1,6 @@
-# metaloops-25
+# metaloops-toolkit
 
-Utilities for converting Hi-C contact data into multi-resolution Cooler (`.mcool`) files and running the original `meta_loops.R` meta-loop caller from the Gambetta Lab [meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main) repository.
+Utilities for converting raw Hi-C contact data into multi-resolution Cooler (`.mcool`) files and running the original `meta_loops.R` meta-loop caller from the Gambetta Lab [meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main) repository.
 
 > **Important:** This repository does **not** implement a new meta-loop calling algorithm.  
 > The meta-loop caller included here, `meta_loops.R`, is a copy of the original script from:
@@ -20,40 +20,35 @@ This repository helps run the following workflow:
 ```mermaid
 flowchart LR
 
-    subgraph METALOOPS [METALOOPS-25]
-    subgraph FORMAT [FORMAT CONVERSION TOOLS]
-        A([h5]) --> B([bedpe]) --> C([cool]) --> D([mcool])
-    end
-        D --> E[metaloops]
-    end
-    subgraph EXECUTION
-        X[Local machine]
-        Y[SLURM cluster]
+    A[h5 files] 
+        -->|conversion| B[bedpe]
+
+    B 
+        -->|cooler tools| C[cool]
+
+    C 
+        -->|multi-resolution| D[mcool]
+
+    D 
+        -->|metaloops| E[Identified loops]
+
+    subgraph Execution
+        L[Local]
+        S[SLURM]
     end
 
-    X --> A
-    Y --> A
-    E --> Z[Identified loops]
+    L --> A
+    S --> A
 
-style METALOOPS fill:#f1f8e9,stroke:#33691e
-style EXECUTION fill:#f1f8e9,stroke:#33691e
+style Execution fill:#f1f8e9,stroke:#33691e
 ```
-
-| Step | Input | Output | Script |
-| :--- | :--- | :--- | :--- |
-| 1 | `.h5` Hi-C matrix files | `.bedpe` | `Conversion_scripts/h52bedpe.py` or `run_h52bedpe.sh` |
-| 2 | `.bedpe` | `.cool` | `Conversion_scripts/bedpe2cool.sh` |
-| 3 | `.cool` | `.mcool` | `Conversion_scripts/cool2mcool.sh` |
-| 4 | `.mcool` | meta-loop calls (`.tsv`) | `run_metaloops.sh` + `meta_loops.R` |
-
 The final output of `meta_loops.R` is a tab-separated file with one row per called meta-loop and columns describing both anchors.
-
 
 
 ## Repository structure
 
 ```text
-metaloops-25/
+metaloops-toolkit/
 ├── README.md
 ├── LICENSE
 ├── NOTICE.md
@@ -87,8 +82,8 @@ metaloops-25/
 
 Clone this repository:
 ```bash
-git clone https://github.com/ccarloscr/metaloops-25
-cd metaloops-25
+git clone https://github.com/ccarloscr/metaloops-toolkit
+cd metaloops-toolkit
 ```
 
 Create and activate the conda environment:
@@ -163,4 +158,4 @@ sbatch slurm/metaloops.sbatch config/local.env
 
 
 ## Credits
-This project uses the script [metaloops.sh](https://github.com/ccarloscr/metaloops-25/blob/main/meta_loops.R) developed by Julien Dorier and the Lausanne University, available under license [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html). The original repository can be found in [[meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main)].
+This project uses the script [metaloops.sh](https://github.com/ccarloscr/metaloops-toolkit/blob/main/meta_loops.R) developed by Julien Dorier and the Lausanne University, available under license [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html). The original repository can be found in [[meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main)].
