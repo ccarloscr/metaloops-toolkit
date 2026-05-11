@@ -152,6 +152,20 @@ bash submit.sh scripts/run_metaloops.sh config/local.env
 - The provided SLURM options in 'config/local.env' should be customized to match your HPC cluster.
 - The default genome settings are for Drosophila dm6.
 
+## Supported HDF5 schema
+
+Different `.h5` Hi-C formats can organize data differently. The current version of the `h5_to_bedpe.py` script supports only sparse CSR Hi-C matrices with the following datasets:
+```text
+intervals/chr_list
+intervals/start_list
+intervals/end_list
+matrix/data
+matrix/indices
+matrix/indptr
+```
+
+Other HDF5 Hi-C formats may require adapter scripts. If input `.h5` file schema is not supported, an expicit format validation message is raised.
+
 
 ## Credits
 This project uses the script [metaloops.sh](https://github.com/ccarloscr/metaloops-toolkit/blob/main/meta_loops.R) developed by Julien Dorier and the Lausanne University, available under license [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.html). The original repository can be found in [[meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main)].
