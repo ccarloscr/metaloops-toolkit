@@ -59,6 +59,7 @@ metaloops-toolkit/
 ├── LICENSE
 ├── CITATION.cff
 ├── environment.yml
+├── submit.sh
 │
 ├── config/
 │   ├── local.env
