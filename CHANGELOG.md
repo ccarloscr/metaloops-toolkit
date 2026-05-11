@@ -12,6 +12,3 @@
 
 ### Removed
 - Hardcoded Drosophila `dm6` paths within script logic; these are now parameters in the `.env` file.
-
-### ⚠️ Breaking Changes
-- Scripts no longer run without a configuration file provided as an argument (e.g., `bash script.sh config/local.env`).
