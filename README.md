@@ -1,7 +1,7 @@
 # metaloops-toolkit
 ![WIP](https://img.shields.io/badge/status-testing%20workflow-orange)
 ---
-### TO DO LIST
+### LIST:
 - Test raw conversion scripts
 - Test slurm conversion scripts
 - Test metaloops
@@ -67,20 +67,15 @@ metaloops-toolkit/
 ├── .gitignore
 │
 ├── config/
-│   ├── example.env
+│   ├── local.env
 │   └── dm6.chrom.sizes.txt
 │
 ├── scripts/
-│   ├── h52bedpe.py
-│   ├── bedpe2cool.sh
-│   ├── cool2mcool.sh
+│   ├── h5_to_bedpe.py
+│   ├── bedpe_to_cool.sh
+│   ├── cool_to_mcool.sh
+│   ├── h5_to_bedpe_wrapper.sh
 │   └── run_metaloops.sh
-│
-├── slurm/
-│   ├── h52bedpe.sbatch
-│   ├── bedpe2cool.sbatch
-│   ├── cool2mcool.sbatch
-│   └── metaloops.sbatch
 │
 └── third_party/
     └── meta-loops-2022/
@@ -139,31 +134,31 @@ After installation and configuration, the workflow can be run either directly fr
 
 ### Local execution
 
-Run the scripts directly using your local configuration file:
+Run the scripts directly using the local configuration file:
 ```bash
-python scripts/h52bedpe.py config/local.env
-bash scripts/bedpe2cool.sh config/local.env
-bash scripts/cool2mcool.sh config/local.env
+bash scripts/h5_to_bedpe_wrapper.sh config/local.env
+bash scripts/bedpe_to_cool.sh config/local.env
+bash scripts/cool_to_mcool.sh config/local.env
 bash scripts/run_metaloops.sh config/local.env
 ```
 
 ### SLURM execution
 
-SLURM submission templates are provided in the slurm/ directory. Before submitting jobs, check that the SLURM settings in config/local.env and/or the slurm/*.sbatch files match your HPC cluster.
+SLURM submission templates are provided in the `config/local.env` file. **Before submitting jobs**, check that the SLURM settings in `config/local.env` match your HPC cluster. The `submit.sh` script is a submission wrapper that reads SLURM resource settings from the `config/loca.env`. Do **NOT** modify `submit.sh`.
 
-Submit the jobs with:
+Submit the jobs using the `submit.sh` script and the appropriate `config/local.env` file:
 ```bash
-sbatch slurm/h52bedpe.sbatch config/local.env
-sbatch slurm/bedpe2cool.sbatch config/local.env
-sbatch slurm/cool2mcool.sbatch config/local.env
-sbatch slurm/metaloops.sbatch config/local.env
+bash submit.sh scripts/h5_to_bedpe_wrapper.sh config/local.env
+bash submit.sh scripts/bedpe_to_cool.sh config/local.env
+bash submit.sh scripts/cool_to_mcool.sh config/local.env
+bash submit.sh scripts/run_metaloops.sh config/local.env
 ```
 
 ## Notes
 
 - The conversion scripts are helper utilities for preparing Hi-C data for meta-loop calling.
 - The actual meta-loop caller is the original `meta_loops.R` script from the Gambetta Lab `meta-loops-2022` repository.
-- The provided SLURM scripts are examples and should be adapted to each user's HPC environment.
+- The provided SLURM options in 'config/local.env' should be customized to match your HPC cluster.
 - The default genome settings are for Drosophila dm6.
 
 
