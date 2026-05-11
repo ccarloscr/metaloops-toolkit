@@ -41,6 +41,29 @@ def h5_to_bedpe(h5_path: Path, bedpe_path: Path, min_count: int = 0) -> bool:
     """
     try:
         with h5py.File(h5_path, "r") as f, bedpe_path.open("w") as bedpe:
+
+            # Validate expected HDF5 schema
+            required_paths = [
+                "intervals/chr_list",
+                "intervals/start_list",
+                "intervals/end_list",
+                "matrix/indptr",
+                "matrix/indices",
+                "matrix/data",
+                "matrix/shape"
+            ]
+    
+            missing = [p for p in required_paths if p not in f]
+    
+            if missing:
+                raise ValueError(
+                    "Unsupported HDF5 schema.\n"
+                    f"Missing datasets: {missing}\n"
+                    "This script currently supports only "
+                    "MetaLoops-compatible sparse CSR Hi-C HDF5 files."
+                )
+    
+            # Load datasets
             chr_list  = f["intervals/chr_list"][:]
             start_list = f["intervals/start_list"][:]
             end_list   = f["intervals/end_list"][:]
