@@ -1,13 +1,6 @@
 # metaloops-toolkit
 ![WIP](https://img.shields.io/badge/status-testing%20workflow-orange)
 ---
-### LIST:
-- Test raw conversion scripts
-- Test slurm conversion scripts
-- Test metaloops
-- Update README
-- Update other files
----
 
 
 Utilities for converting raw Hi-C contact data into multi-resolution Cooler (`.mcool`) files and running the original `meta_loops.R` meta-loop caller from the Gambetta Lab [meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main) repository.
@@ -18,9 +11,9 @@ Utilities for converting raw Hi-C contact data into multi-resolution Cooler (`.m
 >
 > The additional code in this repository consists mainly of:
 >
-> - format-conversion helper scripts,
-> - Drosophila/dm6-oriented defaults,
-> - SLURM job scripts for running the conversion and meta-loop-calling steps on an HPC cluster.
+> - Format-conversion helper scripts,
+> - Local or SLURM HPC config file
+> - Drosophila/dm6-oriented defaults.
 
 
 ## What this repository does
@@ -52,6 +45,8 @@ flowchart LR
 
 style Execution fill:#f1f8e9,stroke:#33691e
 ```
+Conversion scripts do not run sequentially, they are run independently.
+
 The final output of `meta_loops.R` is a tab-separated file with one row per called meta-loop and columns describing both anchors.
 
 
@@ -60,11 +55,10 @@ The final output of `meta_loops.R` is a tab-separated file with one row per call
 ```text
 metaloops-toolkit/
 ├── README.md
+├── CHANGELOG.md
 ├── LICENSE
-├── NOTICE.md
 ├── CITATION.cff
 ├── environment.yml
-├── .gitignore
 │
 ├── config/
 │   ├── local.env
@@ -99,9 +93,9 @@ conda activate metaloops
 
 The environment includes the main dependencies needed for the conversion scripts and for running the original `meta_loops.R` script, including Python 3, cooler, h5py, hdf5plugin, numpy, R, and the required R/Bioconductor packages.
 
-Create local working directories for input files, intermediate files, results, and logs:
+Create directories for input files and ´results´ for the `metaloops.R` output:
 ```bash
-mkdir -p data/h5 data/bedpe data/cool data/mcool results logs
+mkdir -p h5_files bedpe_files cool_files mcool_files results
 ```
 
 
@@ -109,21 +103,17 @@ mkdir -p data/h5 data/bedpe data/cool data/mcool results logs
 
 This repository uses a local configuration file to avoid hard-coding user-specific paths, genome settings, and HPC/SLURM options inside the scripts.
 
-Copy the example configuration file:
-```bash
-cp config/example.env config/local.env
-```
-
-Then edit it for your system:
+Edit the configuration file to match your settings:
 ```bash
 nano config/local.env
 ```
 
-The provided defaults are oriented toward the Drosophila dm6 genome assembly. If you use another genome, you must the following variables with values appropriate for your organism and genome assembly:
+The provided defaults are oriented toward the Drosophila dm6 genome assembly. If you use another genome, you must edit the following parameters with values appropriate for your organism and genome assembly:
 ```bash
-GENOME="dm6"
-CHROM_SIZES="${PROJECT_DIR}/config/dm6.chrom.sizes.txt"
-CHROMS="chr2L,chr2R,chr3L,chr3R,chrX"
+CHROM_SIZES="config/dm6.chrom.sizes.txt"
+ASSEMBLY="dm6"
+BLACKLIST_CHR="chrM|chrY"
+METALOOPS_CHROMOSOMES="chr2L,chr2R,chr3L,chr3R,chr4,chrX"
 ```
 The chromosome sizes file should contain two columns: **chromosome_name** and **chromosome_length**
 
