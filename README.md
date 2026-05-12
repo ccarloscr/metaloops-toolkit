@@ -1,51 +1,52 @@
 # metaloops-toolkit
-![WIP](https://img.shields.io/badge/status-testing%20workflow-orange)
----
 
 
-Utilities for converting raw Hi-C contact data into multi-resolution Cooler (`.mcool`) files and running the original `meta_loops.R` meta-loop caller from the Gambetta Lab [meta-loops-2022](https://github.com/gambettalab/meta-loops-2022/tree/main) repository.
+This toolkit provides a compatibility layer for running the [Gambetta Lab](https://github.com/gambettalab/meta-loops-2022/tree/main) `meta_loops.R` algorithm. It includes automated workflows for format standardization, multi-resolution .mcool generation, and SLURM HPC integration, with optimized defaults for the Drosophila (dm6) genome.
 
 > **Important:** This repository does **not** implement a new meta-loop calling algorithm.  
 > The meta-loop caller included here, `meta_loops.R`, is a copy of the original script from:
-> [gambettalab/meta-loops-2022/loop_calling/meta_loops.R](https://github.com/gambettalab/meta-loops-2022/blob/main/loop_calling/meta_loops.R)
+> [Gambetta Lab](https://github.com/gambettalab/meta-loops-2022/blob/main/loop_calling/meta_loops.R)
 >
 > The additional code in this repository consists mainly of:
 >
-> - Format-conversion helper scripts,
+> - Format-conversion helper scripts
 > - Local or SLURM HPC config file
-> - Drosophila/dm6-oriented defaults.
+> - Drosophila/dm6-oriented defaults
 
 
 ## What this repository does
 
-This repository helps run the following workflow:
+This repository helps run the following:
 
 ```mermaid
 flowchart LR
+    subgraph Optional [Optional Preparation Utilities]
+        direction LR
+        A[h5 files] --> B[bedpe]
+        B --> C[cool]
+        C --> D[mcool]
+    end
+    Optional --> Mandatory
 
-    A[h5 files] 
-        -->|conversion| B[bedpe]
+    subgraph Mandatory [Meta-loop Calling]
+        direction TD
+        M[mcool file] ==> E[Identified loops]
+    end
 
-    B 
-        -->|cooler tools| C[cool]
-
-    C 
-        -->|multi-resolution| D[mcool]
-
-    D 
-        -->|metaloops| E[Identified loops]
-
-    subgraph Execution
+    subgraph Env [Execution Context]
+        direction LR
         L[Local]
         S[SLURM]
     end
+    
+    Env -.-> Optional
+    Env -.-> Mandatory
 
-    L --> A
-    S --> A
-
-style Execution fill:#f1f8e9,stroke:#33691e
+    %% Styling
+    style Optional fill:#f9f9f9,stroke:#999,stroke-dasharray: 5 5
+    style D font-weight:bold,fill:#ffe0b2
+    style M font-weight:bold,fill:#ffe0b2
 ```
-Conversion scripts do not run sequentially, they are run independently.
 
 The final output of `meta_loops.R` is a tab-separated file with one row per called meta-loop and columns describing both anchors.
 
@@ -94,7 +95,7 @@ conda activate metaloops
 
 The environment includes the main dependencies needed for the conversion scripts and for running the original `meta_loops.R` script, including Python 3, cooler, h5py, hdf5plugin, numpy, R, and the required R/Bioconductor packages.
 
-Create directories for input files and ´results´ for the `metaloops.R` output:
+Create directories for input files and `results` for the `metaloops.R` output:
 ```bash
 mkdir -p h5_files bedpe_files cool_files mcool_files results
 ```
@@ -135,7 +136,7 @@ bash scripts/run_metaloops.sh config/local.env
 
 ### SLURM execution
 
-SLURM submission templates are provided in the `config/local.env` file. **Before submitting jobs**, check that the SLURM settings in `config/local.env` match your HPC cluster. The `submit.sh` script is a submission wrapper that reads SLURM resource settings from the `config/loca.env`. Do **NOT** modify `submit.sh`.
+SLURM submission templates are provided in the `config/local.env` file. **Before submitting jobs**, check that the SLURM settings in `config/local.env` match your HPC cluster. The `submit.sh` script is a submission wrapper that reads SLURM resource settings from the `config/local.env`. Do **NOT** modify `submit.sh`.
 
 Submit the jobs using the `submit.sh` script and the appropriate `config/local.env` file:
 ```bash
