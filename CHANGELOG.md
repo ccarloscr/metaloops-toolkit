@@ -1,4 +1,4 @@
-## Version [2.0.0] - 2026-05-11
+## metaloops-toolkit Version [2.0.0] - 2026-05-12
 
 ### Added
 - **Configuration System**: Centralized all project variables in `config/local.env`.
